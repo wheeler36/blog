@@ -5,8 +5,10 @@
 
 	<p class="date">
 	  Submitted <%= time_ago_in_words(@post.created_at) %> Ago
-	  | <%= link_to 'Edit', edit_post_path(@post) %>
-	  | <%= link_to 'Delete', post_path(@post), method: :delete, data: { confirm: "Are you Sure?" }%>
+	  <% if user_signed_in? %>
+		  | <%= link_to 'Edit', edit_post_path(@post) %>
+		  | <%= link_to 'Delete', post_path(@post), method: :delete, data: { confirm: "Are you Sure?" }%>
+	  <% end %>
 	</p>
 
 	<p class="body">
@@ -18,6 +20,10 @@
 		<%= render @post.comments %>
 
 		<h3>Add a comment</h3>
-		<%= render "comments/form" %>
+		<% if user_signed_in? %>
+			<%= render "comments/form" %>
+		<% else %>
+			<p><%= "You must be signed in to comment" %></p>
+	  <% end %>
 	</div>
 </div>
